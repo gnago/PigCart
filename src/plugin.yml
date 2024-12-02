@@ -1,5 +1,5 @@
 name: PigCart
-version: 0.3 # the plugin's version
+version: 0.3.1 # the plugin's version
 author: gnago
 main: me.gnago.pigcart.Main
 api-version: "1.13"

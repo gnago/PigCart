@@ -43,9 +43,9 @@ public class Main extends JavaPlugin {
 
                                 //Accelerate in the direction
                                 Vector currentVelocity = vehicleCart.getVelocity();
-                                if (currentVelocity.getX() < MAX_SPEED)
+                                if (Math.abs(currentVelocity.getX()) < MAX_SPEED)
                                     currentVelocity.setX(ACCELERATION_RATE * direction.getX() + currentVelocity.getX());
-                                if (currentVelocity.getZ() < MAX_SPEED)
+                                if (Math.abs(currentVelocity.getZ()) < MAX_SPEED)
                                     currentVelocity.setZ(ACCELERATION_RATE * direction.getZ() + currentVelocity.getZ());
                                 vehicleCart.setVelocity(currentVelocity);
                                 plr.sendMessage(ChatColor.GREEN + "Current velocity: " + currentVelocity.getX() + ", " + currentVelocity.getY() + ", " + currentVelocity.getZ());
