@@ -2,8 +2,6 @@ package me.gnago.pigcart;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Input;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -48,7 +46,9 @@ public class Main extends JavaPlugin {
                                 if (Math.abs(currentVelocity.getZ()) < MAX_SPEED)
                                     currentVelocity.setZ(ACCELERATION_RATE * direction.getZ() + currentVelocity.getZ());
                                 vehicleCart.setVelocity(currentVelocity);
-                                plr.sendMessage(ChatColor.GREEN + "Current velocity: " + currentVelocity.getX() + ", " + currentVelocity.getY() + ", " + currentVelocity.getZ());
+
+                                //debug
+                                //plr.sendMessage(ChatColor.GREEN + "Current velocity: " + currentVelocity.getX() + ", " + currentVelocity.getY() + ", " + currentVelocity.getZ());
                             }
 
                         }
@@ -64,27 +64,5 @@ public class Main extends JavaPlugin {
     @Override
     public void onDisable() {
         Bukkit.getLogger().info(ChatColor.RED + "Disabled " + this.getName());
-    }
-
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        Player plr = (Player) sender;
-
-        if (sender instanceof Player) {
-            String lowerCmd = cmd.getName().toLowerCase();
-
-            switch (lowerCmd) {
-                case "pigcarters":
-                    plr.sendMessage(ChatColor.LIGHT_PURPLE + "Current PigCarters");
-                    for (Player p : PigCartPlayers) {
-                        plr.sendMessage(p.getName());
-                    }
-                    plr.sendMessage();
-                    return true;
-                default:
-                    return true;
-            }
-        }
-
-        return true;
     }
 }

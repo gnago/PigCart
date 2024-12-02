@@ -24,7 +24,7 @@ public class PigCartListener implements Listener {
             if (pig.getType().equals(EntityType.PIG)) {
                 Entity cart = pig.getVehicle();
                 if (cart != null && cart.getType().equals(EntityType.MINECART)) {
-                    plr.sendMessage("Entered PigCart");
+                    //plr.sendMessage("Entered PigCart"); //debug
                     plugin.PigCartPlayers.add((Player)plr);
                 }
             }
@@ -41,10 +41,12 @@ public class PigCartListener implements Listener {
             if (pig.getType().equals(EntityType.PIG)) {
                 Entity cart = pig.getVehicle();
                 if (cart != null && cart.getType().equals(EntityType.MINECART)) {
+                    plugin.PigCartPlayers.removeIf(p -> p.getUniqueId().equals(plr.getUniqueId()));
+                    /* comment this line to enable debug
                     plr.sendMessage("Exited PigCart");
                     if (plugin.PigCartPlayers.removeIf(p -> p.getUniqueId().equals(plr.getUniqueId()))) {
                         plugin.getServer().broadcastMessage("Removed from list");
-                    }
+                    }//*/
                 }
             }
         }

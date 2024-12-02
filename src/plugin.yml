@@ -1,9 +1,5 @@
 name: PigCart
-version: 0.3.1 # the plugin's version
+version: 1 # the plugin's version
 author: gnago
 main: me.gnago.pigcart.Main
 api-version: "1.13"
-commands:
-    pigcarters:
-      description: Lists all current PigCarters
-      usage: /<command>
