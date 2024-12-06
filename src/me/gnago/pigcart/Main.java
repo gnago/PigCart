@@ -15,8 +15,8 @@ public class Main extends JavaPlugin {
 
     public ArrayList<Player> PigCartPlayers = new ArrayList<>();
 
-    private final static double ACCELERATION_RATE = 0.05;
-    private final static double MAX_SPEED = 1.2; //powered carts are 8m/s, which is 0.4m/t
+    private final static double ACCELERATION_RATE = 0.025;
+    private final static double MAX_SPEED = 1.2; //Measured in m/tick. Powered carts are 8m/s, which is 0.4m/t
 
     @Override
     public void onEnable() {
@@ -32,7 +32,6 @@ public class Main extends JavaPlugin {
                             Input currInput = plr.getCurrentInput();
                             if (currInput.isBackward() || currInput.isForward() || currInput.isLeft() || currInput.isRight()) {
                                 double yaw = 0;
-                                double pitch = 0;
                                 //rotation yaw. Used for rotating the cart
                                 float rYaw = 0;
                                 int rYawCount = 0;
@@ -43,41 +42,29 @@ public class Main extends JavaPlugin {
                                     rYaw += plr.getLocation().getYaw() + 90;
                                     rYawCount++;
                                     yaw = ((plr.getLocation().getYaw() + 90) * Math.PI) / 180;
-                                    pitch = ((plr.getLocation().getPitch() + 90) * Math.PI) / 180;
-                                    direction = direction.add(new Vector(
-                                            Math.sin(pitch) * Math.cos(yaw),
-                                            Math.cos(pitch),
-                                            Math.sin(pitch) * Math.sin(yaw)));
+                                    direction = direction.add(
+                                            new Vector(Math.cos(yaw), 0, Math.sin(yaw)));
                                 }
                                 if (currInput.isForward()) {
                                     rYaw += plr.getLocation().getYaw() - 90;
                                     rYawCount++;
                                     yaw = ((plr.getLocation().getYaw() - 90) * Math.PI) / 180;
-                                    pitch = ((plr.getLocation().getPitch() - 90) * Math.PI) / 180;
-                                    direction = direction.add(new Vector(
-                                            -1 * Math.sin(pitch) * Math.cos(yaw),
-                                            Math.cos(pitch),
-                                            -1 * Math.sin(pitch) * Math.sin(yaw)));
+                                    direction = direction.add(
+                                            new Vector(Math.cos(yaw), 0, Math.sin(yaw)));
                                 }
                                 if (currInput.isLeft()) {
                                     rYaw += plr.getLocation().getYaw() + 180;
                                     rYawCount++;
                                     yaw = ((plr.getLocation().getYaw() + 180) * Math.PI) / 180;
-                                    pitch = ((plr.getLocation().getPitch() + 180) * Math.PI) / 180;
-                                    direction = direction.add(new Vector(
-                                            -1 * Math.sin(pitch) * Math.cos(yaw),
-                                            Math.cos(pitch),
-                                            -1 * Math.sin(pitch) * Math.sin(yaw)));
+                                    direction = direction.add(
+                                            new Vector(Math.cos(yaw), 0, Math.sin(yaw)));
                                 }
                                 if (currInput.isRight()) {
                                     rYaw += plr.getLocation().getYaw();
                                     rYawCount++;
                                     yaw = ((plr.getLocation().getYaw()) * Math.PI) / 180;
-                                    pitch = ((plr.getLocation().getPitch()) * Math.PI) / 180;
-                                    direction = direction.add(new Vector(
-                                            Math.sin(pitch) * Math.cos(yaw),
-                                            Math.cos(pitch),
-                                            Math.sin(pitch) * Math.sin(yaw)));
+                                    direction = direction.add(
+                                            new Vector(Math.cos(yaw), 0, Math.sin(yaw)));
                                 }
 
                                 //this will never happen, but it doesn't hurt to have a DivideByZero protection
