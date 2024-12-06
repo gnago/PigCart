@@ -16,7 +16,7 @@ public class Main extends JavaPlugin {
     public ArrayList<Player> PigCartPlayers = new ArrayList<>();
 
     private final static double ACCELERATION_RATE = 0.025;
-    private final static double MAX_SPEED = 1.2; //powered carts are 8m/s, which is 0.4m/t
+    private final static double MAX_SPEED = 1.2; //Measured in m/tick. Powered carts are 8m/s, which is 0.4m/t
 
     @Override
     public void onEnable() {
@@ -30,13 +30,45 @@ public class Main extends JavaPlugin {
                         if (vehicleCart != null && vehicleCart.getType().equals((EntityType.MINECART)))
                         {
                             Input currInput = plr.getCurrentInput();
-                            if (currInput.isBackward() || currInput.isForward()) {
-                                Vector direction;
-                                if (currInput.isBackward())
-                                    direction = plr.getFacing().getDirection();
-                                else if (currInput.isForward())
-                                    direction = plr.getFacing().getOppositeFace().getDirection();
-                                else
+                            if (currInput.isBackward() || currInput.isForward() || currInput.isLeft() || currInput.isRight()) {
+                                double yaw = 0;
+                                //rotation yaw. Used for rotating the cart
+                                float rYaw = 0;
+                                int rYawCount = 0;
+
+                                Vector direction = new Vector(0, 0, 0);
+
+                                if (currInput.isBackward()) {
+                                    rYaw += plr.getLocation().getYaw() + 90;
+                                    rYawCount++;
+                                    yaw = ((plr.getLocation().getYaw() + 90) * Math.PI) / 180;
+                                    direction = direction.add(
+                                            new Vector(Math.cos(yaw), 0, Math.sin(yaw)));
+                                }
+                                if (currInput.isForward()) {
+                                    rYaw += plr.getLocation().getYaw() - 90;
+                                    rYawCount++;
+                                    yaw = ((plr.getLocation().getYaw() - 90) * Math.PI) / 180;
+                                    direction = direction.add(
+                                            new Vector(Math.cos(yaw), 0, Math.sin(yaw)));
+                                }
+                                if (currInput.isLeft()) {
+                                    rYaw += plr.getLocation().getYaw() + 180;
+                                    rYawCount++;
+                                    yaw = ((plr.getLocation().getYaw() + 180) * Math.PI) / 180;
+                                    direction = direction.add(
+                                            new Vector(Math.cos(yaw), 0, Math.sin(yaw)));
+                                }
+                                if (currInput.isRight()) {
+                                    rYaw += plr.getLocation().getYaw();
+                                    rYawCount++;
+                                    yaw = ((plr.getLocation().getYaw()) * Math.PI) / 180;
+                                    direction = direction.add(
+                                            new Vector(Math.cos(yaw), 0, Math.sin(yaw)));
+                                }
+
+                                //this will never happen, but it doesn't hurt to have a DivideByZero protection
+                                if (rYawCount == 0)
                                     return;
 
                                 //Accelerate in the direction
@@ -46,10 +78,16 @@ public class Main extends JavaPlugin {
                                 if (Math.abs(currentVelocity.getZ()) < MAX_SPEED)
                                     currentVelocity.setZ(ACCELERATION_RATE * direction.getZ() + currentVelocity.getZ());
                                 vehicleCart.setVelocity(currentVelocity);
+                                vehicleCart.setRotation(rYaw/rYawCount, 0);
 
-                                //debug
-                                //plr.sendMessage(ChatColor.GREEN + "Current velocity: " + currentVelocity.getX() + ", " + currentVelocity.getY() + ", " + currentVelocity.getZ());
+                                /*//debug
+                                plr.sendMessage(ChatColor.AQUA + "Current yaw: " + plr.getLocation().getYaw());
+                                plr.sendMessage(ChatColor.AQUA + "Current direction: " + direction.getX() + ", " + direction.getY() + ", " + direction.getZ());
+                                plr.sendMessage(ChatColor.GREEN + "Current velocity: " + currentVelocity.getX() + ", " + currentVelocity.getY() + ", " + currentVelocity.getZ());
+                                //*/
                             }
+                            else
+                                return;
 
                         }
                     }
